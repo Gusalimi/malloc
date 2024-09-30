@@ -6,7 +6,7 @@
 #    By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:38:20 by gsaile            #+#    #+#              #
-#    Updated: 2024/09/26 15:32:12 by gsaile           ###   ########.fr        #
+#    Updated: 2024/09/29 23:41:38 by gsaile           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ LIBFT_DIR	:= libft
 LIBFT_AR	:= $(LIBFT_DIR)/libft.a
 
 CC			:= gcc
-CFLAGS		:= -Wall -Werror -Wextra
+CFLAGS		:= -Wall -Werror -Wextra -g
 RM			:= rm -rf
 
 SRCDIR		:= src
