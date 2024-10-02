@@ -3,7 +3,7 @@ NAME		= libft.a
 OBJS		= $(SRCS:.c=.o)
 CC			= gcc
 RM			= rm -f
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 MLX			= /Users/gsaile/Cursus/MLX42/libmlx42.a -lglfw -lm -L "/Users/$$USER/.brew/opt/glfw/lib/"
 INC			= /Users/gsaile/Cursus/MLX42/include
 

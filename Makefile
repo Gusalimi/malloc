@@ -6,7 +6,7 @@
 #    By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:38:20 by gsaile            #+#    #+#              #
-#    Updated: 2024/09/29 23:41:38 by gsaile           ###   ########.fr        #
+#    Updated: 2024/10/01 16:32:03 by gsaile           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,8 +46,9 @@ all: $(NAME)
 
 $(NAME): $(LIBFT_AR) $(OBJS)
 	@printf "[Building] $(BOLD)$(NAME)$(RESET): "
-	@$(CC) -shared $(OBJS) -lft -L$(LIBFT_DIR) -o $(NAME)
+	@$(CC) $(CFLAGS) -shared $(OBJS) -lft -L$(LIBFT_DIR) -o $(NAME)
 	@printf "$(GREEN)Done$(RESET)\n"
+	@ln -sf $(NAME) libft_malloc.so
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
@@ -68,7 +69,7 @@ clean:
 
 fclean: clean
 	@printf "[Deleting] $(BOLD)$(NAME)$(RESET): "
-	@$(RM) $(NAME)
+	@$(RM) $(NAME) libft_malloc.so
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@printf "$(GREEN)Done$(RESET)\n"
 

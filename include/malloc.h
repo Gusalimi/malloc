@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:24:19 by gsaile            #+#    #+#             */
-/*   Updated: 2024/09/30 13:02:02 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/09/30 19:59:32 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@
 #define SMALL_HEAP_ALLOC_SIZE (16 * getpagesize())
 #define SMALL_BLOCK_ALLOC_SIZE (SMALL_HEAP_ALLOC_SIZE / 128)
 
-enum e_zone_types {
-	TINY_ZONE,
-	SMALL_ZONE,
-	LARGE_ZONE
-};
+typedef enum e_zone_types {
+	TINY,
+	SMALL,
+	LARGE
+} t_zone_types;
 
-static t_heap *g_zones[3];
+extern t_heap *g_zones[3];
 
 void free(void *ptr);
 void *malloc(size_t size);
