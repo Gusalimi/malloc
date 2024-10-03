@@ -6,7 +6,7 @@
 #    By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:38:20 by gsaile            #+#    #+#              #
-#    Updated: 2024/10/01 16:32:03 by gsaile           ###   ########.fr        #
+#    Updated: 2024/10/03 11:44:11 by gsaile           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ RM			:= rm -rf
 SRCDIR		:= src
 OBJDIR		:= .objFiles
 
-FILES		:= malloc
+FILES		:= malloc free realloc show_alloc_mem
 
 SRCS		:= $(addprefix $(SRCDIR)/, $(FILES:=.c))
 OBJS		:= $(addprefix $(OBJDIR)/, $(FILES:=.o))

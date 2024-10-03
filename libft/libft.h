@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 12:49:31 by gsaile            #+#    #+#             */
-/*   Updated: 2024/09/30 12:55:30 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/03 11:53:22 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_line {
 
 typedef char bool;
 #define TRUE 1
-#define FALSE 1
+#define FALSE 0
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
