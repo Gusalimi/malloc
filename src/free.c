@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:02:05 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/03 14:54:49 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/03 14:56:34 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 // - Munmap if empty heap
 
 void free(void *ptr) {
+	if (!ptr)
+		return ;
 	((t_block *)((char *)ptr - sizeof(t_block)))->freed = TRUE;
 	return ;
 }
