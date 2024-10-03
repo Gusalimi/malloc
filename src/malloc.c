@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/03 12:11:23 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/03 14:05:46 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 //		=> Otherwise negative sizes that will overflow
 //	Use getrlimit because of error
 //		a.out(60820,0x1f38ef240) malloc: nano zone abandoned due to inability to reserve vm space.
+//	Check why the new address is 0xXX000 away from the first one (instead of right after)
 
 #include "../include/malloc.h"
 #include <stdio.h>
@@ -50,12 +51,13 @@ t_heap	*get_last_zone(t_heap *zone) {
 void	update_block(t_block *block, size_t size) {
 	t_block *old_next;
 
-	if (block->size == size)
+	if (block->size == size || block->size - size - sizeof(t_block) <= 0)
 		return ;
 	old_next = block->next;
 	block->size = size;
 	block->freed = FALSE;
-	block->next = block + sizeof(t_block) + size;
+	block->next = (t_block *)(block + sizeof(t_block) + size);
+	// printf("%p\n", block->next);
 	block->next->size = block->size - size - sizeof(t_block);
 	block->next->freed = TRUE;
 	block->next->next = old_next;
@@ -99,6 +101,7 @@ t_heap	*new_heap(size_t alloc_size, size_t block_size) {
 	block->next = block + sizeof(t_block) + block_size;
 	block->next->freed = TRUE;
 	block->next->size = alloc_size - sizeof(t_heap) - block_size - (sizeof(t_block) * 2);
+	block->next->next = NULL;
 
 	return zone;
 }
@@ -157,6 +160,8 @@ void *malloc(size_t size) {
 	size_t	alloc_size = 0;
 	int		zone_type = 0;
 	void	*ptr;
+
+	// ft_printf("============ Hello malloc ============\n");
 
 	if (size <= 0)
 		return NULL;
