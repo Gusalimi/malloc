@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/03 14:24:44 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/03 15:04:54 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	update_block(t_block *block, size_t size) {
 	block->next->size = block->size - size - sizeof(t_block);
 	block->next->freed = TRUE;
 	block->next->next = old_next;
-	printf("Block at %p, size: %zu, freed: %d, next: %p\n", block, block->size, block->freed, block->next);
+	// printf("Block at %p, size: %zu, freed: %d, next: %p\n", block, block->size, block->freed, block->next);
 }
 
 t_block	*find_block(t_heap *zone, size_t size) {
@@ -70,7 +70,7 @@ t_block	*find_block(t_heap *zone, size_t size) {
 	while (zone) {
 		block = (t_block *)((char *)zone + sizeof(t_heap));
 		while (block) {
-			printf("find_block : %p %i %zu\n", block, block->freed, block->size);
+			// printf("find_block : %p %i %zu\n", block, block->freed, block->size);
 			if (block->freed && block->size >= size) {
 				update_block(block, size);
 				return block;
@@ -104,7 +104,7 @@ t_heap	*new_heap(size_t alloc_size, size_t block_size) {
 	block->next->size = alloc_size - sizeof(t_heap) - block_size - (sizeof(t_block) * 2);
 	block->next->next = NULL;
 
-	printf("b, bn, bnn : %p %p %p\n", block, block->next, block->next->next);
+	// printf("b, bn, bnn : %p %p %p\n", block, block->next, block->next->next);
 
 	return zone;
 }

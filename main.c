@@ -19,5 +19,6 @@ int main() {
         printf("Memory allocated successfully at (%p).\n", p3);
 		strcpy(p3, "!");
     }
+	show_alloc_mem();
     return 0;
 }
