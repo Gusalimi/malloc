@@ -6,13 +6,13 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:02:05 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/03 11:02:10 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/03 14:50:41 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/malloc.h"
 
 void free(void *ptr) {
-	(void)ptr;
+	((t_block *)((char *)ptr - sizeof(t_block)))->freed = TRUE;
 	return ;
 }
