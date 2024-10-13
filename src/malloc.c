@@ -6,16 +6,14 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/03 15:04:54 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/13 14:06:48 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //	TODO:
-//	Check if remaining size sufficient to create a new block (with header)
-//		=> Otherwise negative sizes that will overflow
 //	Use getrlimit because of error
 //		a.out(60820,0x1f38ef240) malloc: nano zone abandoned due to inability to reserve vm space.
-//	Check why the new address is 0xXX000 away from the first one (instead of right after)
+//  Add size to t_heap
 
 #include "../include/malloc.h"
 #include <stdio.h>
@@ -51,17 +49,18 @@ t_heap	*get_last_zone(t_heap *zone) {
 void	update_block(t_block *block, size_t size) {
 	t_block *old_next;
 
-	if (block->size == size || block->size - size - sizeof(t_block) <= 0)
+	if (block->size == size || (long)block->size - (long)size - (long)sizeof(t_block) <= 0)
 		return ;
 	old_next = block->next;
 	block->size = size;
 	block->freed = FALSE;
 	block->next = (t_block *)((char *)block + sizeof(t_block) + size);
-	// printf("%p\n", block->next);
+//	printf("%p\n", block->next);
 	block->next->size = block->size - size - sizeof(t_block);
 	block->next->freed = TRUE;
+    block->next->prev = block;
 	block->next->next = old_next;
-	// printf("Block at %p, size: %zu, freed: %d, next: %p\n", block, block->size, block->freed, block->next);
+//	printf("Block at %p, size: %zu, freed: %d, next: %p\n", block, block->size, block->freed, block->next);
 }
 
 t_block	*find_block(t_heap *zone, size_t size) {
@@ -70,7 +69,7 @@ t_block	*find_block(t_heap *zone, size_t size) {
 	while (zone) {
 		block = (t_block *)((char *)zone + sizeof(t_heap));
 		while (block) {
-			// printf("find_block : %p %i %zu\n", block, block->freed, block->size);
+//			printf("find_block : %p %i %zu\n", block, block->freed, block->size);
 			if (block->freed && block->size >= size) {
 				update_block(block, size);
 				return block;
@@ -93,10 +92,12 @@ t_heap	*new_heap(size_t alloc_size, size_t block_size) {
 
 	zone->prev = NULL;
 	zone->next = NULL;
+    zone->size = alloc_size;
 
 	block = (t_block *)((char *)zone + sizeof(t_heap));
 	block->freed = FALSE;
 	block->size = block_size;
+//	printf("block_size = %zu | block->size = %zu\n", block_size, block->size);
 	block->prev = NULL;
 	// Next block is the whole heap without the heap and block metadatas and the current block
 	block->next = (t_block *)((char *)block + sizeof(t_block) + block_size);
@@ -164,7 +165,8 @@ void *malloc(size_t size) {
 	int		zone_type = 0;
 	void	*ptr;
 
-	// ft_printf("============ Hello malloc ============\n");
+//	ft_printf("============ Hello malloc ============\n");
+//  ft_printf("%d\n", (int)size);
 
 	if (size <= 0)
 		return NULL;

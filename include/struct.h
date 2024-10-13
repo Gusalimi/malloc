@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 11:03:58 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/03 15:13:30 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/12 11:43:50 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 typedef struct s_heap {
 	struct s_heap	*prev;
 	struct s_heap	*next;
+    size_t          size;
 }	t_heap;
 
 typedef struct s_block {
