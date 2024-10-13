@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 10:59:34 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/03 15:20:39 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/13 14:33:26 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	print_zone(t_heap *zone, char *zone_name) {
 		ft_printf("%s : None\n", zone_name);
 		return ;
 	}
+	ft_printf("%s :\n", zone_name);
 	current_heap = zone;
 	while (current_heap) {
 		current_block = (t_block *)((char *)current_heap + sizeof(t_heap));

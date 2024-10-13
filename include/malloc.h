@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:24:19 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/03 15:19:34 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/13 14:30:28 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,6 @@
 #define TINY_BLOCK_ALLOC_SIZE (TINY_HEAP_ALLOC_SIZE / 128)
 #define SMALL_HEAP_ALLOC_SIZE (16 * getpagesize())
 #define SMALL_BLOCK_ALLOC_SIZE (SMALL_HEAP_ALLOC_SIZE / 128)
-
-typedef enum e_zone_types {
-	TINY,
-	SMALL,
-	LARGE
-} t_zone_types;
 
 extern t_heap *g_zones[3];
 

@@ -15,14 +15,15 @@ int main() {
     // }
     // printf("free(p1)\n");
 	// free(p1);
-    free(p1);
+//    free(p1);
     char *p3 = malloc(90);
     // if (p3) {
     //     printf("Memory allocated successfully at (%p).\n", p3);
 	// 	strcpy(p3, "HEHE");
     // }
     // printf("free(p2)\n");
-    free(p2);
-    free(p3);
+ //   free(p2);
+    //free(p3);
+    show_alloc_mem();
     return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/13 14:06:48 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/13 14:30:10 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_block	*find_block(t_heap *zone, size_t size) {
 	return (NULL);
 }
 
-t_heap	*new_heap(size_t alloc_size, size_t block_size) {
+t_heap	*new_heap(size_t alloc_size, size_t block_size, t_zone_types zone_type) {
 	t_heap	*zone;
 	t_block	*block;
 
@@ -93,6 +93,7 @@ t_heap	*new_heap(size_t alloc_size, size_t block_size) {
 	zone->prev = NULL;
 	zone->next = NULL;
     zone->size = alloc_size;
+	zone->zone_type = zone_type;
 
 	block = (t_block *)((char *)zone + sizeof(t_heap));
 	block->freed = FALSE;
@@ -110,7 +111,7 @@ t_heap	*new_heap(size_t alloc_size, size_t block_size) {
 	return zone;
 }
 
-void	*non_empty_zone(int zone_type, size_t size, size_t alloc_size) {
+void	*non_empty_zone(t_zone_types zone_type, size_t size, size_t alloc_size) {
 	t_heap	*zone;
 	t_block	*block;
 	// printf("non_empty_zone\n");
@@ -122,16 +123,16 @@ void	*non_empty_zone(int zone_type, size_t size, size_t alloc_size) {
 		return (char *)block + sizeof(t_block);
 
 	zone = get_last_zone(zone);
-	zone->next = new_heap(alloc_size, size);
+	zone->next = new_heap(alloc_size, size, zone_type);
 
 	return (NULL);
 }
 
-void	*empty_zone(int zone_type, size_t size, size_t alloc_size) {
+void	*empty_zone(t_zone_types zone_type, size_t size, size_t alloc_size) {
 	// printf("empty_zone\n");
 	t_block	*block;
 
-	g_zones[zone_type] = new_heap(alloc_size, size);
+	g_zones[zone_type] = new_heap(alloc_size, size, zone_type);
 
 	block = (t_block *)((char *)g_zones[zone_type] + sizeof(t_heap));
 
@@ -150,11 +151,13 @@ void	*new_large(size_t size) {
 
 	ptr->prev = NULL;
 	ptr->next = NULL;
+	ptr->size = alloc_size;
+	ptr->zone_type = LARGE;
 	
 	last = get_last_zone(g_zones[LARGE]);
 	if (last) {
 		ptr->prev = last;
-		last->next = ptr;;
+		last->next = ptr;
 	}
 	return (ptr);
 }

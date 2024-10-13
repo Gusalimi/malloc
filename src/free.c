@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:02:05 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/13 14:09:37 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/13 14:32:26 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,15 @@ void free(void *ptr) {
 	block_header->freed = TRUE;
     if (heap_is_empty(block_header)) {
         t_heap *heap = (t_heap *)((char *)block_header - sizeof(t_heap *));
-        // t_heap *prev = heap->prev;
-        // t_heap *next = heap->next;
+        t_heap *prev = heap->prev;
+        t_heap *next = heap->next;
+        if (!prev && !next) {
+            g_zones[heap->zone_type] = NULL;
+        }
         munmap(heap, heap->size);
-        // if (prev)
-        //     prev->next = next;
-        // if (next)
-        //     next->prev = prev;
+        if (prev)
+             prev->next = next;
+        if (next)
+             next->prev = prev;
     }
 }
