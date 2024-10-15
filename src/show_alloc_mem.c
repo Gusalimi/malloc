@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 10:59:34 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/15 15:25:27 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/15 17:18:34 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,26 @@ void	print_zone(t_heap *zone, char *zone_name) {
 	}
 }
 
+void	print_large_zone(void) {
+	t_heap	*current_heap;
+	char	*heap_data;
+
+	if (!g_zones[LARGE]) {
+		ft_printf("LARGE : None\n");
+		return ;
+	}
+	ft_printf("LARGE :\n");
+	current_heap = g_zones[LARGE];
+	while (current_heap) {
+		heap_data = (char *)current_heap + sizeof(t_heap);
+		(void)heap_data;
+		ft_printf("%p - %p : %d bytes\n", heap_data, heap_data + current_heap->size - sizeof(t_heap), (int)(current_heap->size - sizeof(t_heap)));
+		current_heap = current_heap->next;
+	}
+}
+
 void show_alloc_mem() {
 	print_zone(g_zones[TINY], "TINY");
 	print_zone(g_zones[SMALL], "SMALL");
-	print_zone(g_zones[LARGE], "LARGE");
+	print_large_zone();
 }

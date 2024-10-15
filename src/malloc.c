@@ -6,14 +6,13 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/15 15:22:47 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/15 17:20:16 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //	TODO:
 //	Use getrlimit because of error
 //		a.out(60820,0x1f38ef240) malloc: nano zone abandoned due to inability to reserve vm space.
-//  Add size to t_heap
 
 #include "../include/malloc.h"
 #include <stdio.h>
@@ -31,7 +30,7 @@ void	get_infos(size_t size, size_t *alloc_size, int *zone_type) {
 		*alloc_size = SMALL_HEAP_ALLOC_SIZE;
 	} else {
 		*zone_type = LARGE;
-		*alloc_size = size;
+		*alloc_size = size + sizeof(t_heap);
 	}
 }
 
@@ -154,8 +153,11 @@ void	*new_large(size_t size) {
 	if (last) {
 		ptr->prev = last;
 		last->next = ptr;
+	} else {
+		g_zones[LARGE] = ptr;
 	}
-	return (ptr);
+
+	return ((char *)ptr + sizeof(t_heap));
 }
 
 
@@ -166,15 +168,17 @@ void *malloc(size_t size) {
 
 	if (size <= 0)
 		return NULL;
-	write(1, "M\n", 2);
 
+	write(1, "Malloc\n", 7);
 	if (size <= (size_t)SMALL_BLOCK_ALLOC_SIZE)
 		size = (size + 15) & ~15; // Alignment
 
 	get_infos(size, &alloc_size, &zone_type);
 
-	if (zone_type == LARGE)
+	if (zone_type == LARGE) {
+		size = (size + 15) & ~15; // Alignment
 		return new_large(size);
+	}
 
 	if (g_zones[zone_type])
 		ptr = non_empty_zone(zone_type, size, alloc_size);

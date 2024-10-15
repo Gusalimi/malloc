@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:02:05 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/15 15:27:32 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/15 17:19:42 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 // TODO:
 // - Check if double free
-// - Munmap if empty heap
-// - Set to NULL in global if last_heap
-// BUG: Segfault with malloc(INT_MAX+1) (Potentially due to large zone)
 
 bool heap_is_empty(t_block *block) {
     while (block && block->prev)
@@ -30,11 +27,41 @@ bool heap_is_empty(t_block *block) {
     return (TRUE);
 }
 
+bool is_large(void *ptr) {
+    t_heap *head = g_zones[LARGE];
+    while (head) {
+        if ((char *)head + sizeof(t_heap) == ptr)
+            return TRUE;
+        head = head->next;
+    }
+    return FALSE;
+}
+
+void free_large(void *ptr) {
+    t_heap  *header = (t_heap *)((char *)ptr - sizeof(t_heap));
+    t_heap  *prev = header->prev;
+    t_heap  *next = header->next;
+
+    munmap(header, header->size);
+    if (!prev && !next)
+        g_zones[LARGE] = NULL;
+    if (prev)
+        prev->next = next;
+    if (next)
+        next->prev = prev;
+
+}
+
 void free(void *ptr) {
     t_block *block_header;
 
 	if (!ptr)
 		return ;
+
+    if (is_large(ptr)) {
+        free_large(ptr);
+        return ;
+    }
 
     block_header = (t_block *)((char *)ptr - sizeof(t_block));
     if (block_header->freed == TRUE) {
