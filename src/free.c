@@ -6,12 +6,11 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:02:05 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/15 17:19:42 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/15 18:28:08 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/malloc.h"
-#include <stdio.h>
 
 // TODO:
 // - Check if double free

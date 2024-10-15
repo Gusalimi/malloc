@@ -6,15 +6,11 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 10:59:34 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/15 17:18:34 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/15 18:27:51 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/malloc.h"
-#include <stdio.h>
-
-// TODO:
-// Implement %zu in ft_printf
 
 void	print_zone(t_heap *zone, char *zone_name) {
 	t_heap	*current_heap;
@@ -32,7 +28,7 @@ void	print_zone(t_heap *zone, char *zone_name) {
 		while (current_block) {
 			if (!current_block->freed && current_block->size > 0) {
 				block_data = (char *)current_block + sizeof(t_block);
-				printf("%p - %p : %zu bytes\n", block_data, block_data + current_block->size, current_block->size);
+				ft_printf("%p - %p : %zu bytes\n", block_data, block_data + current_block->size, current_block->size);
 			}
 			current_block = current_block->next;
 		}
@@ -53,7 +49,7 @@ void	print_large_zone(void) {
 	while (current_heap) {
 		heap_data = (char *)current_heap + sizeof(t_heap);
 		(void)heap_data;
-		ft_printf("%p - %p : %d bytes\n", heap_data, heap_data + current_heap->size - sizeof(t_heap), (int)(current_heap->size - sizeof(t_heap)));
+		ft_printf("%p - %p : %zu bytes\n", heap_data, heap_data + current_heap->size - sizeof(t_heap), current_heap->size - sizeof(t_heap));
 		current_heap = current_heap->next;
 	}
 }

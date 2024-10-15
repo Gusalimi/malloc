@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/15 17:20:16 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/15 18:27:59 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 //		a.out(60820,0x1f38ef240) malloc: nano zone abandoned due to inability to reserve vm space.
 
 #include "../include/malloc.h"
-#include <stdio.h>
 
 t_heap	*g_zones[3] = { 0 };
 
@@ -169,7 +168,6 @@ void *malloc(size_t size) {
 	if (size <= 0)
 		return NULL;
 
-	write(1, "Malloc\n", 7);
 	if (size <= (size_t)SMALL_BLOCK_ALLOC_SIZE)
 		size = (size + 15) & ~15; // Alignment
 

@@ -3,7 +3,7 @@
 #include <string.h>
 
 int main() {
-    char *p1 = malloc(2147483648);
+    char *p1 = malloc(3147483648);
     show_alloc_mem();
     free(p1);
     show_alloc_mem();

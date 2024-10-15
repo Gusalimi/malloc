@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 12:49:31 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/03 11:53:22 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/15 18:24:20 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,14 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		ft_atoi(const char *str);
 int		ft_putnbr_fd(int n, int fd);
 int		ft_putunbr_fd(unsigned int n, int fd);
+int		ft_putulnbr_fd(unsigned long n, int fd);
 int		ft_putnbr_base(unsigned int nbr, char *base);
 int		ft_putlnbr_base(unsigned long long int nbr, char *base);
 int		ft_putchar_fd(char c, int fd);
 int		ft_putstr_fd(char *s, int fd);
 int		ft_get_len(int n);
 int		ft_get_ulen(unsigned int n);
+int		ft_get_ullen(unsigned long n);
 int		ft_lstsize(t_line *lst);
 int		ft_printf(const char *format, ...);
 int		read_to_list(int fd, t_line **list);
