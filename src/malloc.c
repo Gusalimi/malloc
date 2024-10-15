@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/15 18:27:59 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/15 18:59:36 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	*non_empty_zone(t_zone_types zone_type, size_t size, size_t alloc_size) {
 
 	zone = get_last_zone(zone);
 	zone->next = new_heap(alloc_size, size, zone_type);
+	zone->next->prev = zone;
 
 	return (NULL);
 }
