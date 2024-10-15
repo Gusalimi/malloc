@@ -6,13 +6,13 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 10:59:34 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/15 18:27:51 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/15 18:30:12 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/malloc.h"
 
-void	print_zone(t_heap *zone, char *zone_name) {
+void	print_zone(t_heap *zone, char *zone_name, t_zone_types zone_type) {
 	t_heap	*current_heap;
 	t_block	*current_block;
 	char	*block_data;
@@ -21,7 +21,7 @@ void	print_zone(t_heap *zone, char *zone_name) {
 		ft_printf("%s : None\n", zone_name);
 		return ;
 	}
-	ft_printf("%s :\n", zone_name);
+	ft_printf("%s : %p\n", zone_name, g_zones[zone_type]);
 	current_heap = zone;
 	while (current_heap) {
 		current_block = (t_block *)((char *)current_heap + sizeof(t_heap));
@@ -44,7 +44,7 @@ void	print_large_zone(void) {
 		ft_printf("LARGE : None\n");
 		return ;
 	}
-	ft_printf("LARGE :\n");
+	ft_printf("LARGE : %p\n", g_zones[LARGE]);
 	current_heap = g_zones[LARGE];
 	while (current_heap) {
 		heap_data = (char *)current_heap + sizeof(t_heap);
@@ -55,7 +55,7 @@ void	print_large_zone(void) {
 }
 
 void show_alloc_mem() {
-	print_zone(g_zones[TINY], "TINY");
-	print_zone(g_zones[SMALL], "SMALL");
+	print_zone(g_zones[TINY], "TINY", TINY);
+	print_zone(g_zones[SMALL], "SMALL", SMALL);
 	print_large_zone();
 }
