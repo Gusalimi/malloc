@@ -3,7 +3,7 @@
 #include <string.h>
 
 int main() {
-    char *p1 = malloc(100);
+    char *p1 = malloc(2147483648);
 	char *p2 = malloc(105);
     // if (p1) {
     //     printf("Memory allocated successfully at (%p).\n", p1);
@@ -14,16 +14,23 @@ int main() {
 	// 	strcpy(p2, "World");
     // }
     // printf("free(p1)\n");
-	// free(p1);
+//    show_alloc_mem();
+    write(1, "\n\n", 2);
+	free(p1);
 //    free(p1);
+//    show_alloc_mem();
+    write(1, "\n\n", 2);
     char *p3 = malloc(90);
     // if (p3) {
     //     printf("Memory allocated successfully at (%p).\n", p3);
 	// 	strcpy(p3, "HEHE");
     // }
     // printf("free(p2)\n");
- //   free(p2);
-    //free(p3);
-    show_alloc_mem();
+//    show_alloc_mem();
+    write(1, "\n\n", 2);
+    free(p2);
+    free(p3);
+//    show_alloc_mem();
+    write(1, "\n\n", 2);
     return 0;
 }

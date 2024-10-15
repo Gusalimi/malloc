@@ -6,7 +6,7 @@
 #    By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:38:20 by gsaile            #+#    #+#              #
-#    Updated: 2024/10/12 11:54:30 by gsaile           ###   ########.fr        #
+#    Updated: 2024/10/15 15:16:47 by gsaile           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,11 +34,13 @@ SRCS		:= $(addprefix $(SRCDIR)/, $(FILES:=.c))
 OBJS		:= $(addprefix $(OBJDIR)/, $(FILES:=.o))
 
 #Colors:
-GREEN		:=	\e[92;5;118m
-YELLOW		:=	\e[93;5;226m
+GREEN		:=	\033[0;92m
+YELLOW		:=	\033[0;93m
 GRAY		:=	\e[33;2;37m
 RESET		:=	\e[0m
 BOLD        :=   \e[1m
+
+MAKEFLAGS += --no-print-directory
 
 # =============== RULES ===============
 

@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/13 14:30:10 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/15 15:22:47 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,18 @@ void	update_block(t_block *block, size_t size) {
 	t_block *old_next;
 
 	if (block->size == size || (long)block->size - (long)size - (long)sizeof(t_block) <= 0)
+	{
+		block->freed = FALSE;
 		return ;
+	}
 	old_next = block->next;
 	block->size = size;
 	block->freed = FALSE;
 	block->next = (t_block *)((char *)block + sizeof(t_block) + size);
-//	printf("%p\n", block->next);
 	block->next->size = block->size - size - sizeof(t_block);
 	block->next->freed = TRUE;
     block->next->prev = block;
 	block->next->next = old_next;
-//	printf("Block at %p, size: %zu, freed: %d, next: %p\n", block, block->size, block->freed, block->next);
 }
 
 t_block	*find_block(t_heap *zone, size_t size) {
@@ -69,7 +70,6 @@ t_block	*find_block(t_heap *zone, size_t size) {
 	while (zone) {
 		block = (t_block *)((char *)zone + sizeof(t_heap));
 		while (block) {
-//			printf("find_block : %p %i %zu\n", block, block->freed, block->size);
 			if (block->freed && block->size >= size) {
 				update_block(block, size);
 				return block;
@@ -98,15 +98,13 @@ t_heap	*new_heap(size_t alloc_size, size_t block_size, t_zone_types zone_type) {
 	block = (t_block *)((char *)zone + sizeof(t_heap));
 	block->freed = FALSE;
 	block->size = block_size;
-//	printf("block_size = %zu | block->size = %zu\n", block_size, block->size);
 	block->prev = NULL;
-	// Next block is the whole heap without the heap and block metadatas and the current block
 	block->next = (t_block *)((char *)block + sizeof(t_block) + block_size);
 	block->next->freed = TRUE;
 	block->next->size = alloc_size - sizeof(t_heap) - block_size - (sizeof(t_block) * 2);
+	block->next->prev = block;
 	block->next->next = NULL;
 
-	// printf("b, bn, bnn : %p %p %p\n", block, block->next, block->next->next);
 
 	return zone;
 }
@@ -114,7 +112,6 @@ t_heap	*new_heap(size_t alloc_size, size_t block_size, t_zone_types zone_type) {
 void	*non_empty_zone(t_zone_types zone_type, size_t size, size_t alloc_size) {
 	t_heap	*zone;
 	t_block	*block;
-	// printf("non_empty_zone\n");
 
 	zone = g_zones[zone_type];
 
@@ -129,7 +126,6 @@ void	*non_empty_zone(t_zone_types zone_type, size_t size, size_t alloc_size) {
 }
 
 void	*empty_zone(t_zone_types zone_type, size_t size, size_t alloc_size) {
-	// printf("empty_zone\n");
 	t_block	*block;
 
 	g_zones[zone_type] = new_heap(alloc_size, size, zone_type);
@@ -168,11 +164,9 @@ void *malloc(size_t size) {
 	int		zone_type = 0;
 	void	*ptr;
 
-//	ft_printf("============ Hello malloc ============\n");
-//  ft_printf("%d\n", (int)size);
-
 	if (size <= 0)
 		return NULL;
+	write(1, "M\n", 2);
 
 	if (size <= (size_t)SMALL_BLOCK_ALLOC_SIZE)
 		size = (size + 15) & ~15; // Alignment
@@ -186,8 +180,6 @@ void *malloc(size_t size) {
 		ptr = non_empty_zone(zone_type, size, alloc_size);
 	else
 		ptr = empty_zone(zone_type, size, alloc_size);
-
-	// printf("%p\n", ptr);
 
 	return ptr;
 }
