@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/15 18:59:36 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/16 10:25:25 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,19 @@ t_heap	*get_last_zone(t_heap *zone) {
 void	update_block(t_block *block, size_t size) {
 	t_block *old_next;
 
-	if (block->size == size || (long)block->size - (long)size - (long)sizeof(t_block) <= 0)
+	if (block->size == size || ((long)block->size - (long)size - (long)sizeof(t_block)) <= 0)
 	{
 		block->freed = FALSE;
 		return ;
 	}
 	old_next = block->next;
-	block->size = size;
 	block->freed = FALSE;
 	block->next = (t_block *)((char *)block + sizeof(t_block) + size);
-	block->next->size = block->size - size - sizeof(t_block);
+	block->next->size = (long)block->size - (long)size - (long)sizeof(t_block);
 	block->next->freed = TRUE;
     block->next->prev = block;
 	block->next->next = old_next;
+	block->size = size;
 }
 
 t_block	*find_block(t_heap *zone, size_t size) {
