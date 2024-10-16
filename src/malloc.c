@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/16 10:25:25 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/16 14:19:00 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 
 #include "../include/malloc.h"
 
-t_heap	*g_zones[3] = { 0 };
+t_heap				*g_zones[3] = { 0 };
+pthread_mutex_t	malloc_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void	get_infos(size_t size, size_t *alloc_size, int *zone_type) {
 	if (!alloc_size || !zone_type)
@@ -169,6 +170,7 @@ void *malloc(size_t size) {
 	if (size <= 0)
 		return NULL;
 
+	pthread_mutex_lock(&malloc_mutex);
 	if (size <= (size_t)SMALL_BLOCK_ALLOC_SIZE)
 		size = (size + 15) & ~15; // Alignment
 
@@ -176,6 +178,7 @@ void *malloc(size_t size) {
 
 	if (zone_type == LARGE) {
 		size = (size + 15) & ~15; // Alignment
+		pthread_mutex_unlock(&malloc_mutex);
 		return new_large(size);
 	}
 
@@ -184,6 +187,7 @@ void *malloc(size_t size) {
 	else
 		ptr = empty_zone(zone_type, size, alloc_size);
 
+	pthread_mutex_unlock(&malloc_mutex);
 	return ptr;
 }
 

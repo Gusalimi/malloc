@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:24:19 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/13 14:30:28 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/16 14:16:51 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <sys/resource.h>
+#include <pthread.h>
 #include "../libft/libft.h"
 #include "struct.h"
 
@@ -25,7 +26,8 @@
 #define SMALL_HEAP_ALLOC_SIZE (16 * getpagesize())
 #define SMALL_BLOCK_ALLOC_SIZE (SMALL_HEAP_ALLOC_SIZE / 128)
 
-extern t_heap *g_zones[3];
+extern t_heap			*g_zones[3];
+extern pthread_mutex_t	malloc_mutex;
 
 void free(void *ptr);
 void *malloc(size_t size);

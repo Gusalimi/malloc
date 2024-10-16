@@ -77,7 +77,6 @@ int main() {
     free(ptr1);
     ft_printf("\nFreed 64 bytes\n\n");
     show_alloc_mem();
-    ft_printf("\n\n");
 
     return 0;
 }

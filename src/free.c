@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:02:05 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/16 10:24:04 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/16 14:18:33 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,11 @@ void free(void *ptr) {
 	if (!ptr)
 		return ;
 
+	pthread_mutex_lock(&malloc_mutex);
+
     if (is_large(ptr)) {
         free_large(ptr);
+        pthread_mutex_unlock(&malloc_mutex);
         return ;
     }
 
@@ -82,4 +85,5 @@ void free(void *ptr) {
         if (next)
              next->prev = prev;
     }
+	pthread_mutex_unlock(&malloc_mutex);
 }
