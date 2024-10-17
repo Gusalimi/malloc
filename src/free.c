@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:02:05 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/16 14:18:33 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/17 22:20:05 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void free(void *ptr) {
         t_heap *next = heap->next;
         if (!prev && !next)
             g_zones[heap->zone_type] = NULL;
+		else if (!prev)
+			g_zones[heap->zone_type] = next;
         munmap(heap, heap->size);
         if (prev)
              prev->next = next;
