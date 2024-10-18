@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:24:19 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/16 14:16:51 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/18 13:25:36 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@
 extern t_heap			*g_zones[3];
 extern pthread_mutex_t	malloc_mutex;
 
-void free(void *ptr);
-void *malloc(size_t size);
-void *realloc(void *ptr, size_t size);
-void show_alloc_mem();
+void	shrink_block(t_block *block, size_t size);
+void	enlarge_block(t_block *block, size_t size);
+
+void	free(void *ptr);
+void	*malloc(size_t size);
+void	*realloc(void *ptr, size_t size);
+void	show_alloc_mem();
 
 #endif /* end of include guard: MALLOC_H */

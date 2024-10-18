@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:02:05 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/16 14:18:33 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/18 14:06:04 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,32 @@
 
 // TODO:
 
+
+void    defragment(t_block *block) {
+    t_block *first;
+    t_block *last;
+    t_block *end;
+
+    first = block;
+    last = block;
+    while (first->prev && first->prev->freed) {
+        first = first->prev;
+    }
+    while (last->next && last->next->freed) {
+        last = last->next;
+    }
+
+    end = last->next;
+    int i = 0;
+    while (first->next && first->next != end && i++ < 15) {
+        enlarge_block(first, first->size + first->next->size);
+    }
+}
+
 bool heap_is_empty(t_block *block) {
-    while (block && block->prev)
+    while (block && block->prev) {
         block = block->prev;
+    }
     while (block) {
         if (block->freed == FALSE)
             return (FALSE);
@@ -84,6 +107,9 @@ void free(void *ptr) {
              prev->next = next;
         if (next)
              next->prev = prev;
+    } else {
+        defragment(block_header);
+        ;
     }
 	pthread_mutex_unlock(&malloc_mutex);
 }

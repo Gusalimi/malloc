@@ -78,6 +78,84 @@ int main() {
     ft_printf("\nFreed 64 bytes\n\n");
     show_alloc_mem();
 
+
+    // Test 7: Realloc behavior
+    ft_printf("\nTest 7: Realloc behavior\n\n");
+
+    // Realloc to a larger size
+    void *ptr7 = malloc(64);  // Allocate 64 bytes
+    ft_printf("Allocated 64 bytes at %p\n", ptr7);
+    show_alloc_mem();
+
+    ptr7 = realloc(ptr7, 128);  // Reallocate to 128 bytes
+    if (ptr7 != NULL) {
+        ft_printf("Reallocated to 128 bytes at %p\n", ptr7);
+    }
+    show_alloc_mem();
+
+    // Realloc to a smaller size
+    ptr7 = realloc(ptr7, 32);  // Reallocate to 32 bytes
+    if (ptr7 != NULL) {
+        ft_printf("Reallocated to 32 bytes at %p\n", ptr7);
+    }
+    show_alloc_mem();
+
+    free(ptr7);
+    ft_printf("\nFreed 32 bytes\n\n");
+    show_alloc_mem();
+
+    // Realloc a NULL pointer (should behave like malloc)
+    ft_printf("Realloc NULL pointer\n");
+    void *ptr8 = realloc(NULL, 64);  // Equivalent to malloc(64)
+    if (ptr8 != NULL) {
+        ft_printf("Reallocated NULL to 64 bytes at %p\n", ptr8);
+    }
+    show_alloc_mem();
+
+    free(ptr8);
+    ft_printf("\nFreed 64 bytes\n\n");
+    show_alloc_mem();
+
+    // Realloc to 0 bytes (should free the block)
+    ptr8 = malloc(64);
+    ft_printf("Allocated 64 bytes at %p\n", ptr8);
+    show_alloc_mem();
+
+    ptr8 = realloc(ptr8, 0);  // Equivalent to free(ptr8)
+    if (ptr8 == NULL) {
+        ft_printf("Reallocated 64 bytes to 0 (freed the block)\n");
+    }
+    show_alloc_mem();
+    ft_printf("\n\n");
+
+    // Test 8: Memory Defragmentation during free
+    ft_printf("Test 8: Memory defragmentation during free\n");
+
+    // Allocate multiple small blocks
+    void *ptr9 = malloc(130);
+    void *ptr10 = malloc(256);
+    void *ptr11 = malloc(130);
+    ft_printf("Allocated 64 bytes at %p, 128 bytes at %p, and 64 bytes at %p\n", ptr9, ptr10, ptr11);
+    show_alloc_mem();
+
+    // Free adjacent blocks (ptr9 and ptr10)
+    free(ptr9);
+    free(ptr10);
+    ft_printf("\nFreed 64 and 128 bytes (adjacent blocks)\n");
+    show_alloc_mem();
+
+    // Allocate a large block that could reuse the defragmented space
+    void *ptr12 = malloc(312);  // This should fit into the previously freed space if defragmentation works
+    if (ptr12 != NULL) {
+        ft_printf("Allocated 312 bytes at %p (after defragmentation)\n", ptr12);
+    }
+    show_alloc_mem();
+
+    free(ptr12);
+    free(ptr11);
+    ft_printf("\nFreed 256 and 312 bytes\n\n");
+    show_alloc_mem();
+
     return 0;
 }
 

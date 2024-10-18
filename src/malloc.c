@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/16 14:19:00 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/18 13:25:45 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,6 @@ t_heap	*get_last_zone(t_heap *zone) {
 	return (last);
 }
 
-void	update_block(t_block *block, size_t size) {
-	t_block *old_next;
-
-	if (block->size == size || ((long)block->size - (long)size - (long)sizeof(t_block)) <= 0)
-	{
-		block->freed = FALSE;
-		return ;
-	}
-	old_next = block->next;
-	block->freed = FALSE;
-	block->next = (t_block *)((char *)block + sizeof(t_block) + size);
-	block->next->size = (long)block->size - (long)size - (long)sizeof(t_block);
-	block->next->freed = TRUE;
-    block->next->prev = block;
-	block->next->next = old_next;
-	block->size = size;
-}
-
 t_block	*find_block(t_heap *zone, size_t size) {
 	t_block	*block;
 
@@ -70,7 +52,7 @@ t_block	*find_block(t_heap *zone, size_t size) {
 		block = (t_block *)((char *)zone + sizeof(t_heap));
 		while (block) {
 			if (block->freed && block->size >= size) {
-				update_block(block, size);
+				shrink_block(block, size);
 				return block;
 			}
 			block = block->next;

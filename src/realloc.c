@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:02:21 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/16 14:19:12 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/10/18 13:59:55 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,31 @@
 
 void *realloc(void *ptr, size_t size) {
 	pthread_mutex_lock(&malloc_mutex);
-	(void)size;
+
+	void	*new_ptr;
+
+	if (!ptr) {
+		pthread_mutex_unlock(&malloc_mutex);
+		return (malloc(size));
+	} else if (size == 0) {
+		pthread_mutex_unlock(&malloc_mutex);
+		free(ptr);
+		return (NULL);
+	}
+
+	t_block	*block = ptr - sizeof(t_block);
+	if (size <= block->size) {
+		shrink_block(block, size);
+	} else if (block->next->size >= size - block->size) {
+		enlarge_block(block, size);
+	} else {
+		pthread_mutex_unlock(&malloc_mutex);
+		new_ptr = malloc(size);
+		ft_memcpy(new_ptr, ptr, block->size);
+		free(ptr);
+		return (new_ptr);
+	}
+
 	pthread_mutex_unlock(&malloc_mutex);
 	return ptr;
 }
