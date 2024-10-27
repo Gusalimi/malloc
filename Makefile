@@ -6,7 +6,7 @@
 #    By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 10:38:20 by gsaile            #+#    #+#              #
-#    Updated: 2024/10/18 13:31:06 by gsaile           ###   ########.fr        #
+#    Updated: 2024/10/27 17:58:52 by gsaile           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,5 +76,11 @@ fclean: clean
 	@printf "$(GREEN)Done$(RESET)\n"
 
 re: fclean all
+
+test: re
+	@printf "\n\n======= Result of main.c =======\n"
+	@gcc main.c $(NAME)
+	@LD_LIBRARY_PATH=$(shell pwd) ./a.out
+	@rm a.out
 
 .PHONY: all clean fclean re
