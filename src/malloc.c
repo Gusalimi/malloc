@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/11/04 09:39:54 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/11/04 11:12:37 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,15 +103,19 @@ void	*non_empty_zone(t_zone_types zone_type, size_t size, size_t alloc_size) {
 
 	zone = get_last_zone(zone);
 	zone->next = new_heap(alloc_size, size, zone_type);
+	if (!zone->next)
+		return (NULL);
 	zone->next->prev = zone;
 
-	return (NULL);
+	return (zone->next + sizeof(t_heap) + sizeof(t_block));
 }
 
 void	*empty_zone(t_zone_types zone_type, size_t size, size_t alloc_size) {
 	t_block	*block;
 
 	g_zones[zone_type] = new_heap(alloc_size, size, zone_type);
+	if (!g_zones[zone_type])
+		return (NULL);
 
 	block = (t_block *)((char *)g_zones[zone_type] + sizeof(t_heap));
 
