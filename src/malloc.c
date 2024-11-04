@@ -6,13 +6,14 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/18 13:25:45 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/11/04 09:39:54 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //	TODO:
 //	Use getrlimit because of error
 //		a.out(60820,0x1f38ef240) malloc: nano zone abandoned due to inability to reserve vm space.
+//	Check why I return NULL on non_empty_zone() end
 
 #include "../include/malloc.h"
 
