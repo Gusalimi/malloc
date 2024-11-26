@@ -6,19 +6,14 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/11/04 11:12:37 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/11/26 12:00:35 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//	TODO:
-//	Use getrlimit because of error
-//		a.out(60820,0x1f38ef240) malloc: nano zone abandoned due to inability to reserve vm space.
-//	Check why I return NULL on non_empty_zone() end
 
 #include "../include/malloc.h"
 
 t_heap				*g_zones[3] = { 0 };
-pthread_mutex_t	malloc_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t		malloc_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void	get_infos(size_t size, size_t *alloc_size, int *zone_type) {
 	if (!alloc_size || !zone_type)
@@ -86,7 +81,6 @@ t_heap	*new_heap(size_t alloc_size, size_t block_size, t_zone_types zone_type) {
 	block->next->size = alloc_size - sizeof(t_heap) - block_size - (sizeof(t_block) * 2);
 	block->next->prev = block;
 	block->next->next = NULL;
-
 
 	return zone;
 }

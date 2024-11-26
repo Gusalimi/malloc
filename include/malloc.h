@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:24:19 by gsaile            #+#    #+#             */
-/*   Updated: 2024/10/18 13:25:36 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/11/26 11:59:33 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 #define SMALL_HEAP_ALLOC_SIZE (16 * getpagesize())
 #define SMALL_BLOCK_ALLOC_SIZE (SMALL_HEAP_ALLOC_SIZE / 128)
 
-extern t_heap			*g_zones[3];
-extern pthread_mutex_t	malloc_mutex;
+extern  t_heap			*g_zones[3];
+extern  pthread_mutex_t	malloc_mutex;
 
 void	shrink_block(t_block *block, size_t size);
 void	enlarge_block(t_block *block, size_t size);

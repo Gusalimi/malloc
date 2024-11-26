@@ -1,3 +1,4 @@
 *.dSYM
 .DS_STORE
 */.DS_STORE
+.vscode
