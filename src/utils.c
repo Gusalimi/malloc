@@ -6,25 +6,23 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 13:05:47 by gsaile            #+#    #+#             */
-/*   Updated: 2024/11/26 11:59:59 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/11/26 15:00:13 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/malloc.h"
 
 void	enlarge_block(t_block *block, size_t size) {
-	t_block	*old_next;
+	t_block	*new_next;
 
-	if (block->size == size || block->size + block->next->size <= size + sizeof(t_block)) {
-		block->size = size;
+	if (block->next == NULL) {
 		return ;
 	}
-	old_next = block->next;
-	block->next = (t_block *)((char *)block + size);
-	block->next->next = old_next->next;
-	block->next->freed = old_next->freed;
-	block->next->prev = block;
-	block->next->size = old_next->size + (size - block->size);
+	new_next = block->next->next;
+	block->next = new_next;
+	if (block->next) {
+		block->next->prev = block;
+	}
 	block->size = size;
 }
 

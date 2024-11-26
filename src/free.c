@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:02:05 by gsaile            #+#    #+#             */
-/*   Updated: 2024/11/26 11:59:43 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/11/26 14:59:26 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	defragment(t_block *block) {
 	t_block	*first;
 	t_block	*last;
 	t_block	*end;
-	int		i;
 
 	first = block;
 	last = block;
@@ -27,9 +26,8 @@ void	defragment(t_block *block) {
 		last = last->next;
 	}
 
-	i = 0;
 	end = last->next;
-	while (first->next && first->next != end && i++ < 15) {
+	while (first->next && first->next != end) {
 		enlarge_block(first, first->size + first->next->size);
 	}
 }
@@ -71,7 +69,6 @@ void	free_large(void *ptr) {
 	if (next)
 		next->prev = prev;
 	munmap(header, header->size);
-
 }
 
 void	free(void *ptr) {
