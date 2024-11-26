@@ -132,16 +132,16 @@ int main() {
     ft_printf("Test 8: Memory defragmentation during free\n");
 
     // Allocate multiple small blocks
-    void *ptr9 = malloc(130);
+    void *ptr9 = malloc(144);
     void *ptr10 = malloc(256);
-    void *ptr11 = malloc(130);
-    ft_printf("Allocated 64 bytes at %p, 128 bytes at %p, and 64 bytes at %p\n", ptr9, ptr10, ptr11);
+    void *ptr11 = malloc(144);
+    ft_printf("Allocated 144 bytes at %p, 256 bytes at %p, and 144 bytes at %p\n", ptr9, ptr10, ptr11);
     show_alloc_mem();
 
     // Free adjacent blocks (ptr9 and ptr10)
     free(ptr9);
     free(ptr10);
-    ft_printf("\nFreed 64 and 128 bytes (adjacent blocks)\n");
+    ft_printf("\nFreed 144 and 256 bytes (adjacent blocks)\n");
     show_alloc_mem();
 
     // Allocate a large block that could reuse the defragmented space

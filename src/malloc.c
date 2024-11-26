@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:39:02 by gsaile            #+#    #+#             */
-/*   Updated: 2024/11/26 12:00:35 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/11/26 14:11:18 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_heap				*g_zones[3] = { 0 };
 pthread_mutex_t		malloc_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-void	get_infos(size_t size, size_t *alloc_size, int *zone_type) {
+void	get_infos(size_t size, size_t *alloc_size, t_zone_types *zone_type) {
 	if (!alloc_size || !zone_type)
 		return ;
 	if (size <= (size_t)TINY_BLOCK_ALLOC_SIZE) {
@@ -26,7 +26,7 @@ void	get_infos(size_t size, size_t *alloc_size, int *zone_type) {
 		*alloc_size = SMALL_HEAP_ALLOC_SIZE;
 	} else {
 		*zone_type = LARGE;
-		*alloc_size = size + sizeof(t_heap);
+		*alloc_size = (size + sizeof(t_heap) + 15) & ~15;
 	}
 }
 
@@ -116,11 +116,10 @@ void	*empty_zone(t_zone_types zone_type, size_t size, size_t alloc_size) {
 	return (char *)block + sizeof(t_block);
 }
 
-void	*new_large(size_t size) {
+void	*new_large(size_t alloc_size) {
 	t_heap	*ptr;
 	t_heap	*last;
 
-	size_t alloc_size = (size + sizeof(t_heap) + 15) & ~15;
 	ptr = mmap(NULL, alloc_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	if (ptr == MAP_FAILED) {
 		return (NULL);
@@ -139,28 +138,26 @@ void	*new_large(size_t size) {
 		g_zones[LARGE] = ptr;
 	}
 
+	pthread_mutex_unlock(&malloc_mutex);
 	return ((char *)ptr + sizeof(t_heap));
 }
 
 
 void *malloc(size_t size) {
-	size_t	alloc_size = 0;
-	int		zone_type = 0;
-	void	*ptr;
+	size_t			alloc_size = 0;
+	t_zone_types	zone_type = 0;
+	void			*ptr;
 
 	if (size <= 0)
 		return NULL;
 
 	pthread_mutex_lock(&malloc_mutex);
-	if (size <= (size_t)SMALL_BLOCK_ALLOC_SIZE)
-		size = (size + 15) & ~15; // Alignment
+	size = (size + 15) & ~15; // Alignment
 
 	get_infos(size, &alloc_size, &zone_type);
 
 	if (zone_type == LARGE) {
-		size = (size + 15) & ~15; // Alignment
-		pthread_mutex_unlock(&malloc_mutex);
-		return new_large(size);
+		return new_large(alloc_size);
 	}
 
 	if (g_zones[zone_type])
@@ -171,5 +168,3 @@ void *malloc(size_t size) {
 	pthread_mutex_unlock(&malloc_mutex);
 	return ptr;
 }
-
-
