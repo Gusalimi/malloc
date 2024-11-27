@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:02:05 by gsaile            #+#    #+#             */
-/*   Updated: 2024/11/26 14:59:26 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/11/27 10:04:33 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	defragment(t_block *block) {
 
 	end = last->next;
 	while (first->next && first->next != end) {
-		enlarge_block(first, first->size + first->next->size);
+		merge_blocks(first, first->size + first->next->size);
 	}
 }
 
