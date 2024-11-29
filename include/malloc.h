@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 10:24:19 by gsaile            #+#    #+#             */
-/*   Updated: 2024/11/28 12:01:25 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/11/29 17:22:14 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 #include "../libft/libft.h"
 #include "struct.h"
 
-#define TINY_HEAP_ALLOC_SIZE (16 * getpagesize())
+#define TINY_HEAP_ALLOC_SIZE (16 * sysconf(_SC_PAGESIZE))
 #define TINY_BLOCK_ALLOC_SIZE (TINY_HEAP_ALLOC_SIZE / 128)
-#define SMALL_HEAP_ALLOC_SIZE (64 * getpagesize())
+#define SMALL_HEAP_ALLOC_SIZE (64 * sysconf(_SC_PAGESIZE))
 #define SMALL_BLOCK_ALLOC_SIZE (SMALL_HEAP_ALLOC_SIZE / 128)
 
 extern t_heap			*g_zones[3];
