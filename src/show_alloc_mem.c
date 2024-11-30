@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 10:59:34 by gsaile            #+#    #+#             */
-/*   Updated: 2024/11/26 11:59:56 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/11/30 11:52:22 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ void	print_large_zone(void) {
 }
 
 void show_alloc_mem() {
+	pthread_mutex_lock(&malloc_mutex);
 	print_zone(g_zones[TINY], "TINY", TINY);
 	print_zone(g_zones[SMALL], "SMALL", SMALL);
 	print_large_zone();
+	pthread_mutex_unlock(&malloc_mutex);
 }
