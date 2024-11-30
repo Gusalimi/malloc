@@ -6,18 +6,38 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 10:59:34 by gsaile            #+#    #+#             */
-/*   Updated: 2024/11/30 11:52:22 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/11/30 12:06:51 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/malloc.h"
+
+bool	heap_is_empty(t_heap *heap) {
+	t_block *block = (t_block *)((char *)heap + sizeof(t_heap));
+	while (block) {
+		if (block->freed == FALSE)
+			return (FALSE);
+		block = block->next;
+	}
+	return (TRUE);
+}
+
+bool	zone_is_empty(t_heap *heap) {
+	while (heap) {
+		if (!heap_is_empty(heap)) {
+			return (FALSE);
+		}
+		heap = heap->next;
+	}
+	return (TRUE);
+}
 
 void	print_zone(t_heap *zone, char *zone_name, t_zone_types zone_type) {
 	t_heap	*current_heap;
 	t_block	*current_block;
 	char	*block_data;
 
-	if (!zone) {
+	if (!zone || zone_is_empty(zone)) {
 		ft_printf("%s : None\n", zone_name);
 		return ;
 	}

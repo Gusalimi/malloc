@@ -6,7 +6,7 @@
 /*   By: gsaile <gsaile@student.42mulhouse.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:02:05 by gsaile            #+#    #+#             */
-/*   Updated: 2024/11/27 10:04:33 by gsaile           ###   ########.fr       */
+/*   Updated: 2024/11/30 12:11:58 by gsaile           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,6 @@ void	defragment(t_block *block) {
 	while (first->next && first->next != end) {
 		merge_blocks(first, first->size + first->next->size);
 	}
-}
-
-bool	heap_is_empty(t_block *block) {
-	while (block && block->prev) {
-		block = block->prev;
-	}
-	while (block) {
-		if (block->freed == FALSE)
-			return (FALSE);
-		block = block->next;
-	}
-	return (TRUE);
 }
 
 bool	is_large(void *ptr) {
@@ -90,23 +78,6 @@ void	free(void *ptr) {
 		ft_putstr_fd("Warning : Double free\n", 2);
 	}
 	block_header->freed = TRUE;
-	if (heap_is_empty(block_header)) {
-		while (block_header->prev)
-			block_header = block_header->prev;
-		t_heap *heap = (t_heap *)((char *)block_header - sizeof(t_heap));
-		t_heap *prev = heap->prev;
-		t_heap *next = heap->next;
-		if (!prev && !next)
-			g_zones[heap->zone_type] = NULL;
-		else if (!prev)
-			g_zones[heap->zone_type] = next;
-		munmap(heap, heap->size);
-		if (prev)
-			 prev->next = next;
-		if (next)
-			 next->prev = prev;
-	} else {
-		defragment(block_header);
-	}
+	defragment(block_header);
 	pthread_mutex_unlock(&malloc_mutex);
 }
